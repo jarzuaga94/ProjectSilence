@@ -6,6 +6,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
     <string name="mute_sound">Mute Sound?</string>
     <string name="send_text">Send Text?</string>
     <string name="recurrence_frequency">Recurrence Frequency</string>

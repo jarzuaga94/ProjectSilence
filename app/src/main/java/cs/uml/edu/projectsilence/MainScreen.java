@@ -7,21 +7,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 public class MainScreen extends ListActivity {
+
+
+
+    //ToDoListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Create a new TodoListAdapter for this ListActivity's ListView
         //mAdapter = new ToDoListAdapter(getApplicationContext());
-
+        //mAdapter = new ToDoListAdapter(getApplicationContext());
         // Put divider between ToDoItems and FooterView
         getListView().setFooterDividersEnabled(true);
 
         //TODO - Inflate footerView for footer_view.xml file
-        TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer, null);
+        TextView footerView = (TextView) getLayoutInflater().inflate(R.layout.footer, null);
 
         //TODO - Add footerView to ListView
         getListView().addFooterView(footerView);
@@ -32,7 +36,8 @@ public class MainScreen extends ListActivity {
                 //TODO - Attach Listener to FooterView. Implement onClick().
                 //Intent intent = new Intent(getBaseContext(), AddEvent.class);
                 //startActivityForResult(intent, ADD_EVENT_R);
-
+                Toast toast = Toast.makeText(getApplicationContext(), "add event clicked", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
