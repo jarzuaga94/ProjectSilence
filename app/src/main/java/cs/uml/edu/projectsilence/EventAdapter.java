@@ -1,12 +1,10 @@
 package cs.uml.edu.projectsilence;
 
 import android.content.Context;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.BaseAdapter;
@@ -14,9 +12,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jeremy on 3/25/2015.
- */
+
 public class EventAdapter extends BaseAdapter {
 
     private final List<EventItem> mItems = new ArrayList<EventItem>();
@@ -91,31 +87,20 @@ public class EventAdapter extends BaseAdapter {
         //TODO - Inflate the View for this ToDoItem
         // from todo_item.xml.
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-       RelativeLayout itemLayout = (RelativeLayout)inflater.inflate(R.layout.event_details, null);
+       RelativeLayout itemLayout = (RelativeLayout)inflater.inflate(R.layout.events, null);
 
-        //TODO - Fill in specific ToDoItem data
-        // Remember that the data that goes in this View
-        // corresponds to the user interface elements defined
-        // in the layout file
-
-        //TODO - Display Title in TextView
 
         final TextView titleView = (TextView)itemLayout.findViewById(R.id.title);
         titleView.setText(eventItem.getTitle());
 
 
-
-        //TODO - Display Start Date in a TextView
-
         final TextView startDateView = (TextView)itemLayout.findViewById(R.id.startDate);
         startDateView.setText(EventItem.FORMAT.format(eventItem.getStarDate()));
 
 
-        // TODO - Display Time and Date.
-        // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and time String
 
-        final TextView endDateView = (TextView)itemLayout.findViewById(R.id.endDate);
-        endDateView.setText(EventItem.FORMAT.format(eventItem.getEndDate()));
+       final TextView endDateView = (TextView)itemLayout.findViewById(R.id.endDate);
+       endDateView.setText(EventItem.FORMAT.format(eventItem.getEndDate()));
 
 
         // Return the View you just created

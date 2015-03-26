@@ -10,12 +10,21 @@ import android.widget.TextView;
 
 
 public class MainScreen extends ListActivity {
+    private static final int ADD_EVENT_REQUEST = 0;
 
+    private static final String FILE_NAME = "TodoManagerActivityData.txt";
+    private static final String TAG = "Lab-UserInterface";
+
+    // IDs for menu items
+    private static final int MENU_DELETE = Menu.FIRST;
+    private static final int MENU_DUMP = Menu.FIRST + 1;
+
+    EventAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Create a new TodoListAdapter for this ListActivity's ListView
-        //mAdapter = new ToDoListAdapter(getApplicationContext());
+        mAdapter = new EventAdapter(getApplicationContext());
 
         // Put divider between ToDoItems and FooterView
         getListView().setFooterDividersEnabled(true);
@@ -30,14 +39,14 @@ public class MainScreen extends ListActivity {
             public void onClick(View v) {
 
                 //TODO - Attach Listener to FooterView. Implement onClick().
-                //Intent intent = new Intent(getBaseContext(), AddEvent.class);
-                //startActivityForResult(intent, ADD_EVENT_R);
+                Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
+                startActivityForResult(intent, ADD_EVENT_REQUEST);
 
             }
         });
 
         //TODO - Attach the adapter to this ListActivity's ListView
-        //getListView().setAdapter(mAdapter);
+        getListView().setAdapter(mAdapter);
     }
 
     @Override

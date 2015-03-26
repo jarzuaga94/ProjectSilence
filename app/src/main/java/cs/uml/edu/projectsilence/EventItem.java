@@ -12,10 +12,8 @@ import java.util.Locale;
 public class EventItem {
     static final String ITEM_SEP = System.getProperty("line.separator");
     public final static String TITLE = "title";
-    public final static String START_TIME = "start_time";
     public final static String START_DATE = "start_date";
     public final static String END_DATE = "end_date";
-    public final static String END_TIME = "end_date";
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss", Locale.US);
@@ -61,7 +59,7 @@ public class EventItem {
         return mEndDate;
     }
 
-    public void End(Date date) {
+    public void setEndDate(Date date) {
         mEndDate = date;
     }
     public static void packageIntent(Intent intent, String title,

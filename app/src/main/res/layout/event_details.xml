@@ -1,5 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-</LinearLayout>
+    <!-- Title -->
+
+    <TextView
+        android:id="@+id/TitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TitleLabel"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/title_hint"
+        android:inputType="textShortMessage">
+
+        <requestFocus />
+    </EditText>
+
+    <!-- Status -->
+
+
+
+
+    <!-- Priority -->
+
+
+
+    <!-- Time and Date -->
+
+    <TextView
+        android:id="@+id/start_time_and_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_start_date_set_string"
+        android:layout_below="@+id/start_time_and_date"
+        android:layout_toRightOf="@+id/TitleLabel"
+        android:layout_toEndOf="@+id/TitleLabel" />
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_start_time_set_string"
+        android:layout_above="@+id/start_date_picker_button"
+        android:layout_alignLeft="@+id/end_time"
+        android:layout_alignStart="@+id/end_time" />
+
+    <Button
+        android:id="@+id/start_date_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/start_date"
+        android:text="@string/choose_start_date" />
+
+    <Button
+        android:id="@+id/start_time_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/start_date_picker_button"
+        android:layout_below="@id/start_time"
+        android:text="@string/choose_start_time_string" />
+
+    <!-- Buttons -->
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/cancel_string" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/reset_string" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/submit_string" />
+
+    <Button
+        android:id="@+id/end_date_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="@string/choose_end_date"
+        android:layout_below="@+id/end_date" />
+
+    <Button
+        android:id="@+id/end_time_picker_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/end_date_picker_button"
+        android:layout_below="@id/start_time"
+        android:text="@string/choose_end_time_string" />
+
+    <TextView
+        android:id="@+id/end_time_and_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/endDate"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/start_date_picker_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_end_date_set_string"
+        android:layout_below="@+id/end_time_and_date"
+        android:layout_alignLeft="@+id/start_date"
+        android:layout_alignStart="@+id/start_date" />
+    <TextView
+        android:id="@+id/end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_end_time_set_string"
+        android:layout_above="@+id/end_time_picker_button"
+        android:layout_alignLeft="@+id/submitButton"
+        android:layout_alignStart="@+id/submitButton"
+        android:enabled="true"
+        android:editable="false" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleButton"
+        android:layout_marginBottom="36dp"
+        android:layout_above="@+id/toggleButton2"
+        android:layout_toRightOf="@+id/start_date_picker_button"
+        android:layout_toEndOf="@+id/start_date_picker_button" />
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New ToggleButton"
+        android:id="@+id/toggleButton2"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignLeft="@+id/toggleButton"
+        android:layout_alignStart="@+id/toggleButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_textmessage_textview"
+        android:layout_alignTop="@+id/toggleButton"
+        android:text="@string/send_text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBottom="@+id/toggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/mute_sound_textview"
+        android:layout_alignEnd="@+id/mute_sound_textview" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mute_sound"
+        android:id="@+id/mute_sound_textview"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignTop="@+id/toggleButton2"
+        android:layout_above="@+id/cancelButton" />
+
+</RelativeLayout>
