@@ -5,10 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-/**
- * Created by Jeremy on 3/25/2015.
- */
 public class EventItem {
     static final String ITEM_SEP = System.getProperty("line.separator");
     public final static String TITLE = "title";
@@ -68,9 +64,7 @@ public class EventItem {
         intent.putExtra(EventItem.TITLE, title);
         intent.putExtra(EventItem.START_DATE, start_date);
         intent.putExtra(EventItem.END_DATE, end_date);
-
     }
-
     public String toString() {
         return mTitle + ITEM_SEP + FORMAT.format(mStartDate) + ITEM_SEP + FORMAT.format(mEndDate);
     }
