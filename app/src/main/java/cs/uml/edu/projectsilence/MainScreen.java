@@ -50,6 +50,23 @@ public class MainScreen extends ListActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        // TODO - Check result code and request code.
+        // If user submitted a new ToDoItem
+        // Create a new ToDoItem from the data Intent
+        // and then add it to the adapter
+        if (requestCode == ADD_EVENT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                EventItem todoItem = new EventItem(data);
+                mAdapter.add(todoItem);
+            }
+        }
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_screen, menu);
