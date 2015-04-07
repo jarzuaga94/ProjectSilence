@@ -39,7 +39,10 @@ public class AddEventActivity extends Activity {
     private Date mEndDate;
     private Date mStartTime;
     private Date mEndTime;
-    //private
+
+    private static int timePickerID = 0;
+    private static int datePickerID = 0;
+
     private EditText mTitleText;
 
     @Override
@@ -57,10 +60,12 @@ public class AddEventActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+                datePickerID = 1;
                 showDatePickerDialog();
                 //fixes the main screen problem but requires double click to register
-                startDateString = tempDate;
-                startDateView.setText(startDateString);
+                //startDateString = tempDate;
+                //startDateView.setText(startDateString);
             }
         });
         final Button endDatePickerButton = (Button) findViewById(R.id.end_date_picker_button);
@@ -68,10 +73,11 @@ public class AddEventActivity extends Activity {
             @Override
             public void onClick(View v){
 
+                datePickerID = 2;
                 showDatePickerDialog();
                 //fixes the main screen problem but requires double click to register
-                endDateString = tempDate;
-                endDateView.setText(endDateString);
+                //endDateString = tempDate;
+                //endDateView.setText(endDateString);
             }
         });
         final Button startTimePickerButton = (Button) findViewById(R.id.start_time_picker_button);
@@ -79,10 +85,12 @@ public class AddEventActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+                timePickerID = 1;
                 showTimePickerDialog();
                 //fixes the main screen problem but requires double click to register
-                startTimeString = tempTime;
-                startTimeView.setText(startTimeString);
+                //startTimeString = tempTime;
+                //startTimeView.setText(startTimeString);
             }
         });
         final Button endTimePickerButton = (Button) findViewById(R.id.end_time_picker_button);
@@ -90,10 +98,11 @@ public class AddEventActivity extends Activity {
             @Override
             public void onClick(View v){
 
+                timePickerID = 2;
                 showTimePickerDialog();
                 //fixes the main screen problem but requires double click to register
-                endTimeString = tempTime;
-                endTimeView.setText(endTimeString);
+                //endTimeString = tempTime;
+                //endTimeView.setText(endTimeString);
             }
         });
 
@@ -146,12 +155,14 @@ public class AddEventActivity extends Activity {
         c.setTime(mEndDate);
         setDateString(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH));
-        startDateView.setText(startDateString);
-        endDateView.setText(endDateString);
+        startDateView.setText(tempDate);
+        endDateView.setText(tempDate);
         setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
                 c.get(Calendar.MILLISECOND));
         startTimeView.setText(tempTime);
         endTimeView.setText(tempTime);
+        //startTimeView.setText(startDateString);
+        //endTimeView.setText(endDateString);
     }
 
     private static void setDateString(int year, int monthOfYear, int dayOfMonth) {
@@ -162,8 +173,17 @@ public class AddEventActivity extends Activity {
             mon = "0" + monthOfYear;
         if (dayOfMonth < 10)
             day = "0" + dayOfMonth;
-        //startDateString = year + "-" + mon + "-" + day;
-        //endDateString = year + "-" + mon + "-" + day;
+
+        if( datePickerID == 1 ){
+            startDateString = year + "-" + mon + "-" + day;
+            startDateView.setText(startDateString);
+        }
+        else if( datePickerID == 2 ){
+            endDateString = year + "-" + mon + "-" + day;
+            endDateView.setText(endDateString);
+        }
+
+
         tempDate = year + "-" + mon + "-" + day;
     }
 
@@ -174,8 +194,17 @@ public class AddEventActivity extends Activity {
             hour = "0" + hourOfDay;
         if (minute < 10)
             min = "0" + minute;
-        //startTimeString = hour + ":" + min + ":00";
-        //endTimeString = hour + ":" + min + ":00";
+
+        if( timePickerID == 1 ){
+            startTimeString = hour + ":" + min + ":00";
+            startTimeView.setText(startTimeString);
+        }
+        else if( timePickerID == 2 ){
+            endTimeString = hour + ":" + min + ":00";
+            endTimeView.setText(endTimeString);
+        }
+
+
         tempTime = hour + ":" + min + ":00";
     }
     public static class DatePickerFragment extends DialogFragment implements
@@ -196,6 +225,7 @@ public class AddEventActivity extends Activity {
                               int dayOfMonth) {
             setDateString(year, monthOfYear, dayOfMonth);
 
+
             //startDateView.setText(startDateString);
             //endDateView.setText(endDateString);
         }
@@ -215,6 +245,8 @@ public class AddEventActivity extends Activity {
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             setTimeString(hourOfDay, minute, 0);
+
+
             //startTimeView.setText(startTimeString);
             //endTimeView.setText(endTimeString);
         }
