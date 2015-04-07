@@ -49,10 +49,26 @@ public class MainScreen extends ListActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+
+        /*if (id == R.id.action_settings) {
             return true;
+        }*/
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                addEventSelected();
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        //return super.onOptionsItemSelected(item);
+    }
+
+    private void addEventSelected(){
+
+        Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
+        startActivityForResult(intent, ADD_EVENT_REQUEST);
+
     }
 }
