@@ -52,6 +52,12 @@ public class EventAdapter extends BaseAdapter {
         final TextView endDateView = (TextView)itemLayout.findViewById(R.id.endDate);
         endDateView.setText(EventItem.FORMAT.format(eventItem.getEndDate()));
 
+        final TextView startTimeView = (TextView)itemLayout.findViewById(R.id.startTime);
+        startTimeView.setText(EventItem.timeFORMAT.format(eventItem.getStartTime()));
+
+        final TextView endTimeView = (TextView)itemLayout.findViewById(R.id.endTime);
+        endTimeView.setText(EventItem.timeFORMAT.format(eventItem.getEndTime()));
+
         return itemLayout;
 
     }

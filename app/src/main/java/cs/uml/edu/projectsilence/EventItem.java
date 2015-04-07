@@ -16,15 +16,18 @@ public class EventItem {
     public final static String END_TIME = "end_time";
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss", Locale.US);
+            "yyyy-MM-dd", Locale.US);
+
+    public final static SimpleDateFormat timeFORMAT = new SimpleDateFormat(
+            "HH:mm:ss", Locale.US);
 
     private String mTitle = new String();
     private Date mStartDate = new Date();
     private Date mEndDate = new Date();
-    private Time mStartTime = new Time();
-    private Time mEndTime = new Time();
+    private Date mStartTime = new Date();
+    private Date mEndTime = new Date();
 
-    EventItem(String title, Date start_date, Date end_date, Time start_time, Time end_time) {
+    EventItem(String title, Date start_date, Date end_date, Date start_time, Date end_time) {
         this.mTitle = title;
         this.mStartDate = start_date;
         this.mEndDate = end_date;
@@ -33,7 +36,7 @@ public class EventItem {
     }
     EventItem(Intent intent) {
 
-        mTitle = intent.getStringExtra(EventItem.TITLE);
+
         try {
             mStartDate = EventItem.FORMAT.parse(intent.getStringExtra(EventItem.START_DATE));
         } catch (ParseException e) {
@@ -63,17 +66,15 @@ public class EventItem {
         return mEndDate;
     }
 
-    public void setStartTime(Time time) {
-        mStartTime = time;
-    }
-    public Time getStartTime() {
+    public void setStartTime(Date date) {  mStartTime = date; }
+    public Date getStartTime() {
         return mStartTime;
     }
 
-    public void setEndTime(Time time) {
-        mEndTime = time;
+    public void setEndTime(Date date) {
+        mEndTime = date;
     }
-    public Time getEndTime() {
+    public Date getEndTime() {
         return mEndTime;
     }
 
@@ -92,6 +93,6 @@ public class EventItem {
 
     }
     public String toString() {
-        return mTitle + ITEM_SEP + FORMAT.format(mStartDate) + ITEM_SEP + FORMAT.format(mEndDate) + ITEM_SEP + FORMAT.format(mStartTime) + ITEM_SEP + FORMAT.format(mEndTime);
+        return mTitle + ITEM_SEP + FORMAT.format(mStartDate) + ITEM_SEP + FORMAT.format(mEndDate) + ITEM_SEP + timeFORMAT.format(mStartTime) + ITEM_SEP + timeFORMAT.format(mEndTime);
     }
 }

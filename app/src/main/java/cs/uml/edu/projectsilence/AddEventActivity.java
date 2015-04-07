@@ -35,8 +35,8 @@ public class AddEventActivity extends Activity {
     private static TextView endTimeView;
     private Date mStartDate;
     private Date mEndDate;
-    private Time mStartTime;
-    private Time mEndTime;
+    private Date mStartTime;
+    private Date mEndTime;
     //private
     private EditText mTitleText;
 
