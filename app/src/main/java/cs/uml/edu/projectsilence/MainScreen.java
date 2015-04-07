@@ -55,7 +55,7 @@ public class MainScreen extends ListActivity {
         }*/
         switch (item.getItemId()) {
             case R.id.action_add:
-                addEventSelected();
+                //addEventSelected();
                 return true;
             case R.id.action_settings:
                 return true;
@@ -65,7 +65,7 @@ public class MainScreen extends ListActivity {
         //return super.onOptionsItemSelected(item);
     }
 
-    private void addEventSelected(){
+    public void addEventSelected( MenuItem item){
 
         Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
         startActivityForResult(intent, ADD_EVENT_REQUEST);
