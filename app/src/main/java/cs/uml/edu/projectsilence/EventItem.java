@@ -36,7 +36,7 @@ public class EventItem {
     }
     EventItem(Intent intent) {
 
-
+        mTitle = intent.getStringExtra(EventItem.TITLE);
         try {
             mStartDate = EventItem.FORMAT.parse(intent.getStringExtra(EventItem.START_DATE));
         } catch (ParseException e) {
@@ -46,6 +46,16 @@ public class EventItem {
             mEndDate = EventItem.FORMAT.parse(intent.getStringExtra(EventItem.END_DATE));
         }catch (ParseException e){
             mEndDate = new Date();
+        }
+        try {
+            mStartTime = EventItem.timeFORMAT.parse(intent.getStringExtra(EventItem.START_TIME));
+        } catch (ParseException e) {
+            mStartTime = new Date();
+        }
+        try{
+            mEndTime = EventItem.timeFORMAT.parse(intent.getStringExtra(EventItem.END_TIME));
+        }catch (ParseException e){
+            mEndTime = new Date();
         }
     }
     public String getTitle() {
