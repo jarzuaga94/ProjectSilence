@@ -243,6 +243,7 @@ public class AddEventActivity extends Activity {
                     true);
         }
 
+
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             setTimeString(hourOfDay, minute, 0);
 
