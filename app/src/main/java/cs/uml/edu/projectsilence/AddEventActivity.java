@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,9 @@ public class AddEventActivity extends Activity {
     private static TextView endTimeView;
     private Date mStartDate;
     private Date mEndDate;
+    private Time mStartTime;
+    private Time mEndTime;
+    //private
     private EditText mTitleText;
 
     @Override
@@ -106,8 +110,11 @@ public class AddEventActivity extends Activity {
                 String titleString = mTitleText.getText().toString();
                 String startFullDate = startDateString + " " + startTimeString;
                 String endFullDate = endDateString + " " + endTimeString;
+                String startTime = startTimeString;
+                String endTime = endTimeString;
+
                 Intent data = new Intent();
-                EventItem.packageIntent(data, titleString, startFullDate, endFullDate);
+                EventItem.packageIntent(data, titleString, startFullDate, endFullDate ,startTime, endTime );
                 setResult(RESULT_OK, data);
                 finish();
             }
@@ -152,6 +159,7 @@ public class AddEventActivity extends Activity {
         if (minute < 10)
             min = "0" + minute;
         startTimeString = hour + ":" + min + ":00";
+        endTimeString = hour + ":" + min + ":00";
     }
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
@@ -172,6 +180,7 @@ public class AddEventActivity extends Activity {
             setDateString(year, monthOfYear, dayOfMonth);
 
             startDateView.setText(startDateString);
+            endDateView.setText(endDateString);
         }
 
     }
@@ -190,6 +199,7 @@ public class AddEventActivity extends Activity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             setTimeString(hourOfDay, minute, 0);
             startTimeView.setText(startTimeString);
+            endDateView.setText(endDateString);
         }
     }
     private void showDatePickerDialog() {
