@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class MainScreen extends ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_screen, menu);
         return true;
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

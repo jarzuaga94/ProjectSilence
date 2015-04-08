@@ -27,9 +27,9 @@ public class AddEventActivity extends Activity {
     private static final String TAG = "Lab-UserInterface";
     private static String startTimeString;
     private static String startDateString;
-    private static String endTimeString = 00 + ":" + 00 + ":00";
-    private static String endDateString = 00 + ":" + 00 + ":00";
-    private static String tempTime = 00 + ":" + 00 + ":00";
+    private static String endTimeString;
+    private static String endDateString;
+    private static String tempTime;
     private static String tempDate;
     private static TextView startDateView;
     private static TextView startTimeView;
@@ -133,6 +133,12 @@ public class AddEventActivity extends Activity {
                 String titleString = mTitleText.getText().toString();
                 String startFullDate = startDateString + " " + startTimeString;
                 String endFullDate = endDateString + " " + endTimeString;
+                if( startTimeString == null ){
+                    startTimeString = tempTime;
+                }
+                if( endTimeString == null ){
+                    endTimeString = tempTime;
+                }
                 String startTime = startTimeString;
                 String endTime = endTimeString;
 
