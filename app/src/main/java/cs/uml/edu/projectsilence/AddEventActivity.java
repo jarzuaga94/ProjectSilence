@@ -27,9 +27,9 @@ public class AddEventActivity extends Activity {
     private static final String TAG = "Lab-UserInterface";
     private static String startTimeString;
     private static String startDateString;
-    private static String endTimeString;
-    private static String endDateString;
-    private static String tempTime;
+    private static String endTimeString = 00 + ":" + 00 + ":00";
+    private static String endDateString = 00 + ":" + 00 + ":00";
+    private static String tempTime = 00 + ":" + 00 + ":00";
     private static String tempDate;
     private static TextView startDateView;
     private static TextView startTimeView;
@@ -150,6 +150,8 @@ public class AddEventActivity extends Activity {
         mStartDate = new Date(mStartDate.getTime() + SEVEN_DAYS);
         mEndDate = new Date(mEndDate.getTime() + SEVEN_DAYS);
 
+
+
         Calendar c = Calendar.getInstance();
         c.setTime(mStartDate);
         c.setTime(mEndDate);
@@ -157,12 +159,18 @@ public class AddEventActivity extends Activity {
                 c.get(Calendar.DAY_OF_MONTH));
         startDateView.setText(tempDate);
         endDateView.setText(tempDate);
+        //startDateView.setText(startDateString);
+        //endDateView.setText(endDateString);
+
+
         setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
                 c.get(Calendar.MILLISECOND));
         startTimeView.setText(tempTime);
         endTimeView.setText(tempTime);
-        //startTimeView.setText(startDateString);
-        //endTimeView.setText(endDateString);
+
+
+        //startTimeView.setText(startTimeString);
+        //endTimeView.setText(endTimeString);
     }
 
     private static void setDateString(int year, int monthOfYear, int dayOfMonth) {
@@ -182,9 +190,9 @@ public class AddEventActivity extends Activity {
             endDateString = year + "-" + mon + "-" + day;
             endDateView.setText(endDateString);
         }
-
-
-        tempDate = year + "-" + mon + "-" + day;
+        else {
+            tempDate = year + "-" + mon + "-" + day;
+        }
     }
 
     private static void setTimeString(int hourOfDay, int minute, int mili) {
@@ -203,9 +211,13 @@ public class AddEventActivity extends Activity {
             endTimeString = hour + ":" + min + ":00";
             endTimeView.setText(endTimeString);
         }
+        else{
+            tempTime = hour + ":" + min + ":00";
+            //startTimeView.setText(tempTime);
+            //endTimeView.setText(tempTime);
+        }
 
 
-        tempTime = hour + ":" + min + ":00";
     }
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {

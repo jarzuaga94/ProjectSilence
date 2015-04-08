@@ -71,4 +71,9 @@ public class MainScreen extends ListActivity {
         startActivityForResult(intent, ADD_EVENT_REQUEST);
 
     }
+
+    public void removeEvents( MenuItem item){
+        mAdapter.clear();
+
+    }
 }
