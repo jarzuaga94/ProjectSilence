@@ -11,20 +11,18 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import java.util.Calendar;
 import java.util.Date;
 
 
 public class AddEventActivity extends Activity {
-
-    // 7 days in milliseconds - 7 * 24 * 60 * 60 * 1000
-    private static final int SEVEN_DAYS = 604800000;
-    private static final String TAG = "Lab-UserInterface";
     private static String startTimeString;
     private static String startDateString;
     private static String endTimeString;
@@ -35,10 +33,10 @@ public class AddEventActivity extends Activity {
     private static TextView startTimeView;
     private static TextView endDateView;
     private static TextView endTimeView;
+    private static boolean mute_sound;
+    private static boolean send_text;
     private Date mStartDate;
     private Date mEndDate;
-    private Date mStartTime;
-    private Date mEndTime;
 
     private static int timePickerID = 0;
     private static int datePickerID = 0;
@@ -47,6 +45,8 @@ public class AddEventActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DBAdapter database = new DBAdapter(getApplicationContext());
+        database.open();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_details);
         mTitleText = (EditText) findViewById(R.id.title);
@@ -105,12 +105,32 @@ public class AddEventActivity extends Activity {
                 //endTimeView.setText(endTimeString);
             }
         });
+        final ToggleButton sendMessageTB = (ToggleButton)findViewById(R.id.sendTextTB);
+        sendMessageTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    send_text = true;
+                else
+                    send_text = false;
+            }
+        });
+        final ToggleButton muteSoundsTB = (ToggleButton)findViewById(R.id.muteSoundTB);
+        muteSoundsTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    mute_sound = true;
+                else
+                    mute_sound = false;
+            }
+        });
+
 
          final Button cancelButton = (Button) findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                log("Entered cancelButton.OnClickListener.onClick()");
                 Intent data = new Intent();
                 setResult(RESULT_CANCELED, data);
                 finish();
@@ -141,9 +161,11 @@ public class AddEventActivity extends Activity {
                 }
                 String startTime = startTimeString;
                 String endTime = endTimeString;
+                boolean muteSounds = mute_sound;
+                boolean sendText = send_text;
 
                 Intent data = new Intent();
-                EventItem.packageIntent(data, titleString, startFullDate, endFullDate ,startTime, endTime );
+                EventItem.packageIntent(data, titleString, startFullDate, endFullDate,startTime, endTime, muteSounds, sendText );
                 setResult(RESULT_OK, data);
                 finish();
             }
@@ -153,8 +175,8 @@ public class AddEventActivity extends Activity {
     private void setDefaultDateTime() {
         mStartDate = new Date();
         mEndDate = new Date();
-        mStartDate = new Date(mStartDate.getTime() + SEVEN_DAYS);
-        mEndDate = new Date(mEndDate.getTime() + SEVEN_DAYS);
+        mStartDate = new Date(mStartDate.getTime());
+        mEndDate = new Date(mEndDate.getTime());
 
 
 
@@ -278,14 +300,5 @@ public class AddEventActivity extends Activity {
     private void showTimePickerDialog() {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "timePicker");
-    }
-
-    private void log(String msg) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG, msg);
     }
 }

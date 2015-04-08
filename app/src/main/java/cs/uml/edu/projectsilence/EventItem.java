@@ -1,7 +1,6 @@
 package cs.uml.edu.projectsilence;
 
 import android.content.Intent;
-import android.text.format.Time;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +13,9 @@ public class EventItem {
     public final static String END_DATE = "end_date";
     public final static String START_TIME = "start_time";
     public final static String END_TIME = "end_time";
+    public final static String MUTE_SOUND = "mute_sounds";
+    public final static String SEND_TEXT = "send_text";
+
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.US);
@@ -26,13 +28,17 @@ public class EventItem {
     private Date mEndDate = new Date();
     private Date mStartTime = new Date();
     private Date mEndTime = new Date();
+    private boolean mSendText = false;
+    private boolean mMuteSounds = false;
 
-    EventItem(String title, Date start_date, Date end_date, Date start_time, Date end_time) {
+    EventItem(String title, Date start_date, Date end_date, Date start_time, Date end_time, boolean mute_sounds, boolean send_text) {
         this.mTitle = title;
         this.mStartDate = start_date;
         this.mEndDate = end_date;
         this.mStartTime = start_time;
         this.mEndTime = end_time;
+        this.mSendText = send_text;
+        this.mMuteSounds = mute_sounds;
     }
     EventItem(Intent intent) {
 
@@ -57,6 +63,8 @@ public class EventItem {
         }catch (ParseException e){
             mEndTime = new Date();
         }
+        mMuteSounds = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
+        mSendText = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
     }
     public String getTitle() {
         return mTitle;
@@ -91,15 +99,24 @@ public class EventItem {
     public void setEndDate(Date date) {
         mEndDate = date;
     }
+    public boolean getMuteSounds(){
+        return mMuteSounds;
+
+    }
+    public boolean getSendText(){
+        return mSendText;
+    }
     public static void packageIntent(Intent intent, String title,
                                      String start_date, String end_date,
-                                     String start_time, String end_time) {
+                                     String start_time, String end_time, boolean mute_sounds, boolean send_text) {
 
         intent.putExtra(EventItem.TITLE, title);
         intent.putExtra(EventItem.START_DATE, start_date);
         intent.putExtra(EventItem.END_DATE, end_date);
         intent.putExtra(EventItem.START_TIME, start_time);
         intent.putExtra(EventItem.END_TIME, end_time );
+        intent.putExtra(EventItem.SEND_TEXT, send_text);
+        intent.putExtra(EventItem.MUTE_SOUND, mute_sounds);
 
     }
     public String toString() {

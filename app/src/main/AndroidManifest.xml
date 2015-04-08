@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".AddEventActivity"
-            android:label="@string/title_activity_add_event"
+            android:label="Add Event"
             android:parentActivityName=".MainScreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

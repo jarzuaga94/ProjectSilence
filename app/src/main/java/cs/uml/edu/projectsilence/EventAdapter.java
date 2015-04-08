@@ -16,7 +16,6 @@ import java.util.List;
 public class EventAdapter extends BaseAdapter {
     private final List<EventItem> mItems = new ArrayList<EventItem>();
     private final Context mContext;
-    private static final String TAG = "Lab-UserInterface";
     public EventAdapter(Context context) {
         mContext = context;
     }
