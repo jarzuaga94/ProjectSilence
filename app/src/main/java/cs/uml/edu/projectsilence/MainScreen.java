@@ -100,7 +100,7 @@ public class MainScreen extends ListActivity {
 
     //
     //-Called when Remove All Events is clicked from actionbar/settings tab
-    //-Clears all events from screen also deleteds events from database.
+    //-Clears all events from screen also deletes events from database.
     //
     public void removeEvents( MenuItem item){
         mAdapter.clear();
