@@ -76,21 +76,21 @@ public class MainScreen extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
         switch (item.getItemId()) {
             case R.id.action_add:
-                //addEventSelected();
                 return true;
             case R.id.action_settings:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        //return super.onOptionsItemSelected(item);
     }
 
+
+    //
+    //-Called when ADD Event is clicked from actionbar/settings tab.
+    //-Creates an intent and calls it to switch to addEvent activity.
+    //
     public void addEventSelected( MenuItem item){
 
         Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
@@ -98,6 +98,10 @@ public class MainScreen extends ListActivity {
 
     }
 
+    //
+    //-Called when Remove All Events is clicked from actionbar/settings tab
+    //-Clears all events from screen also deleteds events from database.
+    //
     public void removeEvents( MenuItem item){
         mAdapter.clear();
         database.deleteAll();
