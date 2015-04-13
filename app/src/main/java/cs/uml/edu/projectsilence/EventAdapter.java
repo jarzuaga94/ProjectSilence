@@ -3,11 +3,13 @@ package cs.uml.edu.projectsilence;
 import android.content.Context;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,10 @@ public class EventAdapter extends BaseAdapter {
         mItems.clear();
         notifyDataSetChanged();
     }
+    public void remove(int pos){
+        mItems.remove(pos);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return mItems.size();
@@ -40,10 +46,10 @@ public class EventAdapter extends BaseAdapter {
         return pos;
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, ViewGroup parent) {
         final EventItem eventItem = (EventItem)getItem(position);
-        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout itemLayout = (RelativeLayout)inflater.inflate(R.layout.events, null);
+        final LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final RelativeLayout itemLayout = (RelativeLayout)inflater.inflate(R.layout.events, null);
         final TextView titleView = (TextView)itemLayout.findViewById(R.id.title);
         titleView.setText(eventItem.getTitle());
         final TextView startDateView = (TextView)itemLayout.findViewById(R.id.startDate);

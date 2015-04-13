@@ -45,8 +45,6 @@ public class AddEventActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DBAdapter database = new DBAdapter(getApplicationContext());
-        database.open();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_details);
         mTitleText = (EditText) findViewById(R.id.title);
