@@ -7,8 +7,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.Time;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -53,6 +51,11 @@ public class AddEventActivity extends Activity {
         endDateView = (TextView) findViewById(R.id.end_date);
         endTimeView = (TextView) findViewById(R.id.end_time);
         setDefaultDateTime();
+
+        //
+        //-StartDate Picker
+        //-Sets datePickerID to 1 to set correct textview to the start date.
+        //
         final Button startDatePickerButton = (Button) findViewById(R.id.start_date_picker_button);
         startDatePickerButton.setOnClickListener(new View.OnClickListener() {
 
@@ -66,6 +69,11 @@ public class AddEventActivity extends Activity {
                 //startDateView.setText(startDateString);
             }
         });
+
+        //
+        //-EndDate Picker
+        //-Sets datePickerID to 2 to set correct textview to the end date.
+        //
         final Button endDatePickerButton = (Button) findViewById(R.id.end_date_picker_button);
         endDatePickerButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -78,6 +86,11 @@ public class AddEventActivity extends Activity {
                 //endDateView.setText(endDateString);
             }
         });
+
+        //
+        //-StartTime Picker
+        //-Sets timePickerID to 1 to set correct textview to the start time.
+        //
         final Button startTimePickerButton = (Button) findViewById(R.id.start_time_picker_button);
         startTimePickerButton.setOnClickListener(new View.OnClickListener() {
 
@@ -91,6 +104,11 @@ public class AddEventActivity extends Activity {
                 //startTimeView.setText(startTimeString);
             }
         });
+
+        //
+        //-EndDate Picker
+        //-Sets timePickerID to 2 to set correct textview to the end time.
+        //
         final Button endTimePickerButton = (Button) findViewById(R.id.end_time_picker_button);
         endTimePickerButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -103,6 +121,11 @@ public class AddEventActivity extends Activity {
                 //endTimeView.setText(endTimeString);
             }
         });
+
+        //
+        //-Toggles sendMessage for the event
+        //-(Not yet implemented)
+        //
         final ToggleButton sendMessageTB = (ToggleButton)findViewById(R.id.sendTextTB);
         sendMessageTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -113,6 +136,11 @@ public class AddEventActivity extends Activity {
                     send_text = false;
             }
         });
+
+        //
+        //-Toggles muteSounds for the event
+        //-(Not yet implemented)
+        //
         final ToggleButton muteSoundsTB = (ToggleButton)findViewById(R.id.muteSoundTB);
         muteSoundsTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,8 +152,11 @@ public class AddEventActivity extends Activity {
             }
         });
 
-
-         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        //
+        //-Cancel button
+        //-Returns to mainActivity
+        //
+        final Button cancelButton = (Button) findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +166,10 @@ public class AddEventActivity extends Activity {
             }
         });
 
+        //
+        //-Reset Button
+        //-Clears all textfields and returns date and time to defaults.
+        //
         final Button resetButton = (Button) findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +179,11 @@ public class AddEventActivity extends Activity {
             }
         });
 
+        //
+        //-Submit Button
+        //-Returns the data into a eventAdapter in mainActivity
+        //-If not data is input by user it will send defaults with no title back to mainActivity.
+        //
         final Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +210,9 @@ public class AddEventActivity extends Activity {
         });
     }
 
+    //
+    //-Sets default Date and Time for StartTime,EndTime,StartDate,EndDate.
+    //
     private void setDefaultDateTime() {
         mStartDate = new Date();
         mEndDate = new Date();
@@ -199,6 +242,9 @@ public class AddEventActivity extends Activity {
         //endTimeView.setText(endTimeString);
     }
 
+    //
+    //-Takes the date set by date picker and sets the strings according to ID sent from desired button.
+    //
     private static void setDateString(int year, int monthOfYear, int dayOfMonth) {
         monthOfYear++;
         String mon = "" + monthOfYear;
@@ -221,6 +267,9 @@ public class AddEventActivity extends Activity {
         }
     }
 
+    //
+    //-Takes the time set by date picker and sets the strings according to ID sent from desired button.
+    //
     private static void setTimeString(int hourOfDay, int minute, int mili) {
         String hour = "" + hourOfDay;
         String min = "" + minute;
