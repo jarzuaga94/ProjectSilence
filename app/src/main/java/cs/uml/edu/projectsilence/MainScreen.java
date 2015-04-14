@@ -42,7 +42,7 @@ public class MainScreen extends ListActivity {
         //getListView().addFooterView(footerView);
         Cursor cursor = database.getAllRows();
         cursor.moveToFirst();
-        Intent data = new Intent();
+        final Intent data = new Intent();
         EventItem eventItem;
         while(!cursor.isAfterLast()) {
             Title = cursor.getString(DBAdapter.COL_NAME);
@@ -64,6 +64,9 @@ public class MainScreen extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.remove(position);
+                database.remove( id );
+                //Will remove all events from list and DB
+                //removeEvents( );
             }
         });
     }
@@ -123,6 +126,12 @@ public class MainScreen extends ListActivity {
         database.deleteAll();
 
     }
+
+    public void removeEvents( ){
+        mAdapter.clear();
+        database.deleteAll();
+
+    }
     public void scheduleAlarm(View V)
     {
         String year = "";
@@ -159,7 +168,7 @@ public class MainScreen extends ListActivity {
         PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(hour),
+        calendar.set(Integer.parseInt(year), Integer.parseInt(month)-1, Integer.parseInt(day), Integer.parseInt(hour),
                 Integer.parseInt(minutes), 0);
 
         // create the object
