@@ -27,6 +27,7 @@ public class MainScreen extends ListActivity {
     private static String EndTime;
     private static boolean MuteSound;
     private static boolean SendText;
+    public static String isStartAlarm;
     private float x1, y1, x2, y2;
 
     EventAdapter mAdapter;
@@ -75,11 +76,11 @@ public class MainScreen extends ListActivity {
                 mAdapter.add(eventItem);
                 StartDate = EventItem.FORMAT.format(eventItem.getStarDate());
                 StartTime = EventItem.timeFORMAT.format(eventItem.getStartTime());
+                EndDate = EventItem.FORMAT.format(eventItem.getEndDate());
+                EndTime = EventItem.timeFORMAT.format(eventItem.getEndTime());
                 database.insertRow(eventItem.getTitle(),StartTime,
-                        StartDate, EventItem.timeFORMAT.format(eventItem.getEndTime()),
-                        EventItem.FORMAT.format(eventItem.getEndDate()), eventItem.getMuteSounds(), eventItem.getSendText());
-
-                scheduleAlarm(getListView());
+                        StartDate, EndTime, EndDate, eventItem.getMuteSounds(), eventItem.getSendText());
+                scheduleAlarm(getListView(), data);
             }
         }
     }
@@ -123,51 +124,79 @@ public class MainScreen extends ListActivity {
         database.deleteAll();
 
     }
-    public void scheduleAlarm(View V)
+    public void scheduleAlarm(View V, Intent data)
     {
+
+
+        Intent startIntent = new Intent(MainScreen.this, AlarmReceiver.class);
+        startIntent.replaceExtras(data);
+        startIntent.putExtra(isStartAlarm, true);
+        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
+        startIntent.putExtra(isStartAlarm, false);
+        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
+        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        //set the alarm for particular time
+        alarm.set(alarm.RTC,getMilli(StartDate, StartTime),startPIntent);
+        alarm.set(alarm.RTC, getMilli(EndDate, EndTime),endPIntent);
+        Toast.makeText(this, "Alarm created", Toast.LENGTH_LONG).show();
+
+    }
+    private long getMilli(String dateString, String timeString) {
         String year = "";
         String month = "";
         String day = "";
         String hour = "";
         String minutes = "";
         int i = 0;
-        while(StartDate.charAt(i)!= '-') {
-            year += StartDate.charAt(i);
+        while (dateString.charAt(i) != '-') {
+            year += dateString.charAt(i);
             i++;
         }
         i++;
-        while(StartDate.charAt(i)!= '-') {
-            month += StartDate.charAt(i);
+        while (dateString.charAt(i) != '-') {
+            if (i == 5 && dateString.charAt(i) == '0') {
+
+            } else
+                month += dateString.charAt(i);
             i++;
         }
         i++;
-        while(StartDate.length() !=  i) {
-            day += StartDate.charAt(i);
+        while (dateString.length() != i) {
+            if (i == 8 && dateString.charAt(i) == '0') {
+
+            } else
+                day += dateString.charAt(i);
             i++;
         }
         i = 0;
-        while(StartTime.charAt(i)!= ':') {
-            hour += StartTime.charAt(i);
+        while (timeString.charAt(i) != ':') {
+            if (i == 0 && timeString.charAt(i) == '0') {
+
+            } else
+                hour += timeString.charAt(i);
             i++;
         }
         i++;
-        while(StartTime.charAt(i)!= ':') {
-            minutes += StartTime.charAt(i);
+        while (StartTime.charAt(i) != ':') {
+            if (i == 3 && timeString.charAt(i) == '0') {
+
+            } else
+                minutes += timeString.charAt(i);
             i++;
         }
-        Intent startIntent = new Intent(MainScreen.this, AlarmReceiver.class);
-        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
-        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day), Integer.parseInt(hour),
-                Integer.parseInt(minutes), 0);
+        int yearInt = Integer.parseInt(year);
+        int monthInt = Integer.parseInt(month);
+        int dayInt = Integer.parseInt(day);
+        int hourInt = Integer.parseInt(hour);
+        int minutesInt = Integer.parseInt(minutes);
+        calendar.set(yearInt, monthInt - 1, dayInt, hourInt,
+                minutesInt, 0);
 
         // create the object
 
-
-        //set the alarm for particular time
-        alarm.set(alarm.RTC_WAKEUP,calendar.getTimeInMillis(),startPIntent);
-        Toast.makeText(this, "Alarm created", Toast.LENGTH_LONG).show();
+        long time = calendar.getTimeInMillis();
+        return time;
 
     }
 }

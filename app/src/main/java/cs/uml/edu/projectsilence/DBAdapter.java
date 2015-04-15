@@ -68,7 +68,7 @@ public class DBAdapter {
 	}
 
 	public void close() {
-        myDBHelper.close();
+		myDBHelper.close();
 	}
 	
 
@@ -89,11 +89,7 @@ public class DBAdapter {
 		String where = KEY_ROWID + "=" + rowId;
 		return db.delete(DATABASE_TABLE, where, null) != 0;
 	}
-
-    public void delete_byID(long id){
-        db.delete(DATABASE_TABLE, KEY_ROWID+"="+id, null);
-    }
-
+	
 	public void deleteAll() {
 		Cursor c = getAllRows();
 		long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
@@ -104,14 +100,6 @@ public class DBAdapter {
 		}
 		c.close();
 	}
-
-    public void remove(long id){
-        //String string =String.valueOf(id);
-        //db.execSQL("DELETE FROM " + DATABASE_TABLE + " WHERE _id = '" + string + "'");
-        Cursor c = getAllRows();
-        deleteRow(c.getLong((int) id));
-        c.close();
-    }
 
 	public Cursor getAllRows() {
 		String where = null;
@@ -132,8 +120,6 @@ public class DBAdapter {
 		}
 		return c;
 	}
-
-
 
 	public boolean updateRow(long rowId, String name, String startTime, String startDate,
                              String endDate, String endTime, boolean muteSound, boolean sendMessage) {
