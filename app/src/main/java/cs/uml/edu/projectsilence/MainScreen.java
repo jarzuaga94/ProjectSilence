@@ -126,14 +126,13 @@ public class MainScreen extends ListActivity {
     }
     public void scheduleAlarm(View V, Intent data)
     {
-
-
         Intent startIntent = new Intent(MainScreen.this, AlarmReceiver.class);
+        Intent endIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         startIntent.replaceExtras(data);
         startIntent.putExtra(isStartAlarm, true);
         PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
-        startIntent.putExtra(isStartAlarm, false);
-        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
+        endIntent.putExtra(isStartAlarm, false);
+        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, endIntent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         //set the alarm for particular time
         alarm.set(alarm.RTC,getMilli(StartDate, StartTime),startPIntent);
