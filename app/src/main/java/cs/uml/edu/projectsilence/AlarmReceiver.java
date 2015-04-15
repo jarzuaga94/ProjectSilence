@@ -44,6 +44,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_MUSIC, false);
             amanager.setStreamMute(AudioManager.STREAM_RING, false);
             amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
+            Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
         }
       }
 

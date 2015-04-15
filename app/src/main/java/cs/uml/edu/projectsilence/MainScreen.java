@@ -28,6 +28,7 @@ public class MainScreen extends ListActivity {
     private static boolean MuteSound;
     private static boolean SendText;
     public static String isStartAlarm;
+    public static int alarmID = 0;
     private float x1, y1, x2, y2;
 
     EventAdapter mAdapter;
@@ -83,6 +84,8 @@ public class MainScreen extends ListActivity {
                 scheduleAlarm(getListView(), data);
             }
         }
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,6 +125,7 @@ public class MainScreen extends ListActivity {
     public void removeEvents( MenuItem item){
         mAdapter.clear();
         database.deleteAll();
+        alarmID = 0;
 
     }
     public void scheduleAlarm(View V, Intent data)
@@ -130,10 +134,12 @@ public class MainScreen extends ListActivity {
         Intent endIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         startIntent.replaceExtras(data);
         endIntent.replaceExtras(data);
-        startIntent.putExtra(isStartAlarm, true);
-        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
+        startIntent.putExtra(isStartAlarm, true );
+        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, alarmID, startIntent, 0);
+        alarmID++;
         endIntent.putExtra(isStartAlarm, false);
-        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, endIntent, 0);
+        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, alarmID, endIntent, 0);
+        alarmID++;
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         //set the alarm for particular time
         alarm.set(alarm.RTC,getMilli(StartDate, StartTime),startPIntent);
@@ -177,7 +183,7 @@ public class MainScreen extends ListActivity {
             i++;
         }
         i++;
-        while (StartTime.charAt(i) != ':') {
+        while (timeString.charAt(i) != ':') {
             if (i == 3 && timeString.charAt(i) == '0') {
 
             } else
