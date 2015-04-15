@@ -1,15 +1,9 @@
 package cs.uml.edu.projectsilence;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.media.AudioManager;
-import android.os.Bundle;
-import android.provider.Telephony;
 import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.widget.Toast;
 
 /**
@@ -17,33 +11,15 @@ import android.widget.Toast;
  */
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
-        boolean muteSound = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
-        boolean sendMessage = intent.getBooleanExtra(EventItem.SEND_TEXT, false);
-        boolean isStartAlarm = intent.getBooleanExtra(MainScreen.isStartAlarm, false);
-        Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
-        if(isStartAlarm) {
-            if (muteSound) {
-                AudioManager amanager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-                amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
-                amanager.setStreamMute(AudioManager.STREAM_ALARM, true);
-                amanager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-                amanager.setStreamMute(AudioManager.STREAM_RING, true);
-                amanager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
-            }
-            if (sendMessage) {
-
-
-            }
-        }
-        else{
-            AudioManager amanager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
-            amanager.setStreamMute(AudioManager.STREAM_ALARM, false);
-            amanager.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            amanager.setStreamMute(AudioManager.STREAM_RING, false);
-            amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
-        }
+    public void onReceive(Context context, Intent intent)
+    {
+       System.out.println("enter broadcast receiver");
+     /*   String phoneNumberReciver="9718202185";// phone number to which SMS to be send
+        String message="Hi I will be there later, See You soon";// message to send
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumberReciver, null, message, null, null);
+        // Show the toast  like in above screen shot*/
+        Toast.makeText(context, "Alarm Triggered and SMS Sent", Toast.LENGTH_LONG).show();
     }
-}
 
+}
