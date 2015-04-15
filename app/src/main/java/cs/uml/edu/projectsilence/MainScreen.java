@@ -129,6 +129,7 @@ public class MainScreen extends ListActivity {
         Intent startIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         Intent endIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         startIntent.replaceExtras(data);
+        endIntent.replaceExtras(data);
         startIntent.putExtra(isStartAlarm, true);
         PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, 0, startIntent, 0);
         endIntent.putExtra(isStartAlarm, false);
