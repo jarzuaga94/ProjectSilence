@@ -17,6 +17,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         boolean muteSound = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
         boolean sendMessage = intent.getBooleanExtra(EventItem.SEND_TEXT, false);
         boolean isStartAlarm = intent.getBooleanExtra(MainScreen.isStartAlarm, false);
+
+        //Will get used when we send texts based on location
+        //String fromEvent = intent.getStringExtra(EventItem.TITLE);
+
+
         Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
         if(isStartAlarm){
             if (muteSound) {
@@ -27,6 +32,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 amanager.setStreamMute(AudioManager.STREAM_MUSIC, true);
                 amanager.setStreamMute(AudioManager.STREAM_RING, true);
                 amanager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+                amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, true);
+                amanager.setStreamMute(AudioManager.STREAM_DTMF, true);
+                amanager.setRingerMode( 0 );
             }
             if(sendMessage){
                 String phoneNumber = "16034758425";
@@ -45,6 +53,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_MUSIC, false);
             amanager.setStreamMute(AudioManager.STREAM_RING, false);
             amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+            amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
+            amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
 
 
             Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();

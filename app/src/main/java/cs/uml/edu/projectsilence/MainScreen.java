@@ -62,11 +62,12 @@ public class MainScreen extends ListActivity {
         cursor.close();
         getListView().setAdapter(mAdapter);
 
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 deleteItem(position);
                 mAdapter.remove(position);
+                return true;
             }
         });
     }
