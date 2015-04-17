@@ -12,7 +12,6 @@ public class DBAdapter {
 	
 	// DB Fields
 	public static final String KEY_ROWID = "_id";
-	public static final int COL_ROWID = 0;
 	public static final String KEY_NAME = "name";
 	public static final String KEY_STARTTIME = "startTime";
 	public static final String KEY_STARTDATE = "startDate";

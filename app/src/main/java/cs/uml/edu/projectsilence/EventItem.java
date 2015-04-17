@@ -15,6 +15,7 @@ public class EventItem {
     public final static String END_TIME = "end_time";
     public final static String MUTE_SOUND = "mute_sounds";
     public final static String SEND_TEXT = "send_text";
+    public final static String ID = "id";
 
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
@@ -30,9 +31,11 @@ public class EventItem {
     private Date mEndTime = new Date();
     private boolean mSendText = false;
     private boolean mMuteSounds = false;
+    private long mId;
 
-    EventItem(String title, Date start_date, Date end_date, Date start_time, Date end_time, boolean mute_sounds, boolean send_text) {
+    EventItem(String title, long id, Date start_date, Date end_date, Date start_time, Date end_time, boolean mute_sounds, boolean send_text) {
         this.mTitle = title;
+        this.mId = id;
         this.mStartDate = start_date;
         this.mEndDate = end_date;
         this.mStartTime = start_time;
@@ -65,6 +68,7 @@ public class EventItem {
         }
         mMuteSounds = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
         mSendText = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
+        mId = intent.getLongExtra(EventItem.ID, mId);
     }
     public String getTitle() {
         return mTitle;
@@ -101,16 +105,18 @@ public class EventItem {
     }
     public boolean getMuteSounds(){
         return mMuteSounds;
-
     }
+    public void setID(int id){mId = id;}
+    public long getID(){ return mId; }
     public boolean getSendText(){
         return mSendText;
     }
-    public static void packageIntent(Intent intent, String title,
+    public static void packageIntent(Intent intent, String title, long id,
                                      String start_date, String end_date,
                                      String start_time, String end_time, boolean mute_sounds, boolean send_text) {
 
         intent.putExtra(EventItem.TITLE, title);
+        intent.putExtra(EventItem.ID, id);
         intent.putExtra(EventItem.START_DATE, start_date);
         intent.putExtra(EventItem.END_DATE, end_date);
         intent.putExtra(EventItem.START_TIME, start_time);

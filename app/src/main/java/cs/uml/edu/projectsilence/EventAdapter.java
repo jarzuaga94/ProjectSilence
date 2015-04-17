@@ -38,7 +38,7 @@ public class EventAdapter extends BaseAdapter {
         return mItems.size();
     }
     @Override
-    public Object getItem(int pos) {
+    public EventItem getItem(int pos) {
         return mItems.get(pos);
     }
     @Override

@@ -189,13 +189,18 @@ public class AddEventActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String titleString = mTitleText.getText().toString();
-                String startFullDate = startDateString + " " + startTimeString;
-                String endFullDate = endDateString + " " + endTimeString;
+                String startDate = startDateString;
+                String endDate = endDateString;
+                if(startDateString == null){
+                    startDate = startDateView.getText().toString();
+                }
+                if(endDate == null)
+                    endDate = endDateView.getText().toString();
                 if( startTimeString == null ){
-                    startTimeString = tempTime;
+                    startTimeString = startTimeView.getText().toString();
                 }
                 if( endTimeString == null ){
-                    endTimeString = tempTime;
+                    endTimeString = endTimeView.getText().toString();
                 }
                 String startTime = startTimeString;
                 String endTime = endTimeString;
@@ -203,7 +208,7 @@ public class AddEventActivity extends Activity {
                 boolean sendText = send_text;
 
                 Intent data = new Intent();
-                EventItem.packageIntent(data, titleString, startFullDate, endFullDate,startTime, endTime, muteSounds, sendText );
+                EventItem.packageIntent(data, titleString,0, startDate, endDate,startTime, endTime, muteSounds, sendText );
                 setResult(RESULT_OK, data);
                 finish();
             }

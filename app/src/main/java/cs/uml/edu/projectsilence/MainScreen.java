@@ -2,6 +2,7 @@ package cs.uml.edu.projectsilence;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.Intent;
 import android.app.ListActivity;
@@ -28,20 +29,18 @@ public class MainScreen extends ListActivity {
     private static boolean MuteSound;
     private static boolean SendText;
     public static String isStartAlarm;
-    public static int alarmID = 0;
-    private float x1, y1, x2, y2;
+    public static long id;
 
     EventAdapter mAdapter;
     DBAdapter database;
+    AlarmManager alarm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         database = new DBAdapter(getApplication());
         database.open();
+        database.deleteAll();
         mAdapter = new EventAdapter(getApplicationContext());
-        //getListView().setFooterDividersEnabled(true);
-        //TextView footerView = (TextView) this.getLayoutInflater().inflate(R.layout.footer, null);
-        //getListView().addFooterView(footerView);
         Cursor cursor = database.getAllRows();
         cursor.moveToFirst();
         Intent data = new Intent();
@@ -54,7 +53,8 @@ public class MainScreen extends ListActivity {
             EndTime = cursor.getString(DBAdapter.COL_ENDTIME);
             MuteSound = cursor.getInt(DBAdapter.COL_MUTESOUND) > 0;
             SendText = cursor.getInt(DBAdapter.COL_SENDMESSAGE) > 0;
-            EventItem.packageIntent(data, Title, StartDate, EndDate, StartTime, EndTime, MuteSound, SendText);
+            id = cursor.getLong(cursor.getColumnIndex("_id"));
+            EventItem.packageIntent(data, Title, id,StartDate, EndDate, StartTime, EndTime, MuteSound, SendText);
             eventItem = new EventItem(data);
             mAdapter.add(eventItem);
             cursor.moveToNext();
@@ -65,22 +65,30 @@ public class MainScreen extends ListActivity {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteItem(position);
                 mAdapter.remove(position);
             }
         });
+    }
+    @Override
+    protected void onDestroy()
+    {
+        database.close();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_EVENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 EventItem eventItem = new EventItem(data);
-                mAdapter.add(eventItem);
                 StartDate = EventItem.FORMAT.format(eventItem.getStarDate());
                 StartTime = EventItem.timeFORMAT.format(eventItem.getStartTime());
                 EndDate = EventItem.FORMAT.format(eventItem.getEndDate());
                 EndTime = EventItem.timeFORMAT.format(eventItem.getEndTime());
-                database.insertRow(eventItem.getTitle(),StartTime,
+                id = database.insertRow(eventItem.getTitle(), StartTime,
                         StartDate, EndTime, EndDate, eventItem.getMuteSounds(), eventItem.getSendText());
+                eventItem.setID((int)id);
+                data.putExtra(EventItem.ID, id);
+                mAdapter.add(eventItem);
                 scheduleAlarm(getListView(), data);
             }
         }
@@ -123,10 +131,10 @@ public class MainScreen extends ListActivity {
     //-Clears all events from screen also deletes events from database.
     //
     public void removeEvents( MenuItem item){
+        for(int i = 0; i < mAdapter.getCount(); i++)
+            deleteItem(i);
         mAdapter.clear();
         database.deleteAll();
-        alarmID = 0;
-
     }
     public void scheduleAlarm(View V, Intent data)
     {
@@ -135,12 +143,11 @@ public class MainScreen extends ListActivity {
         startIntent.replaceExtras(data);
         endIntent.replaceExtras(data);
         startIntent.putExtra(isStartAlarm, true );
-        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, alarmID, startIntent, 0);
-        alarmID++;
+        id = data.getLongExtra(EventItem.ID, id);
+        PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, (int)id, startIntent, 0);
         endIntent.putExtra(isStartAlarm, false);
-        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, alarmID, endIntent, 0);
-        alarmID++;
-        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, (int)id*10 , endIntent, 0);
+        alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         //set the alarm for particular time
         alarm.set(alarm.RTC,getMilli(StartDate, StartTime),startPIntent);
         alarm.set(alarm.RTC, getMilli(EndDate, EndTime),endPIntent);
@@ -204,5 +211,22 @@ public class MainScreen extends ListActivity {
         long time = calendar.getTimeInMillis();
         return time;
 
+    }
+    private void deleteItem(int position)
+    {
+        EventItem event = mAdapter.getItem(position);
+        Intent intent = new Intent(MainScreen.this, AlarmReceiver.class);
+        EventItem.packageIntent(intent,event.getTitle(), event.getID(), EventItem.FORMAT.format(event.getStarDate()),
+                EventItem.FORMAT.format(event.getEndDate()), EventItem.timeFORMAT.format(event.getStartTime()),
+                EventItem.timeFORMAT.format(event.getEndTime()), event.getMuteSounds(), event.getSendText());
+        intent.putExtra(isStartAlarm, true );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID(), intent, 0);
+        alarm.cancel(pendingIntent);
+        Toast.makeText(this, "Alarm deleted", Toast.LENGTH_LONG).show();
+        intent.putExtra(isStartAlarm, false );
+        pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
+        alarm.cancel(pendingIntent);
+        Toast.makeText(this, "Alarm delete 2", Toast.LENGTH_LONG).show();
+        database.deleteRow(event.getID());
     }
 }

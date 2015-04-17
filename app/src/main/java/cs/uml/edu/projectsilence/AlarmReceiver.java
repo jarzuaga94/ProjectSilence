@@ -20,6 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
         if(isStartAlarm){
             if (muteSound) {
+                Toast.makeText(context, "Mute Sound Triggered", Toast.LENGTH_LONG).show();
                 AudioManager amanager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
                 amanager.setStreamMute(AudioManager.STREAM_ALARM, true);
@@ -44,6 +45,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_MUSIC, false);
             amanager.setStreamMute(AudioManager.STREAM_RING, false);
             amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+
 
             Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
         }
