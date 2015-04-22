@@ -28,9 +28,6 @@ public class SMSReceiver extends BroadcastReceiver {
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
                     String message = "I'm currently busy";
-
-
-
                     // Show Alert
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context,

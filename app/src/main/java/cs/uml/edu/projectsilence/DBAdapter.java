@@ -131,8 +131,6 @@ public class DBAdapter {
         newValues.put(KEY_ENDTIME, endTime);
         newValues.put(KEY_MUTESOUND, muteSound);
         newValues.put(KEY_SENDMESSAGE, sendMessage);
-
-
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;
     }
     private static class DatabaseHelper extends SQLiteOpenHelper

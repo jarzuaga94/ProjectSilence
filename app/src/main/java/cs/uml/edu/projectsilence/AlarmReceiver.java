@@ -14,7 +14,7 @@ import android.widget.Toast;
  * Created by Jeremy on 4/13/2015.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-    SMSReceiver smsReceiver = new SMSReceiver();
+    CallReceiver callReceiver = new CallReceiver();
     @Override
     public void onReceive(Context context, Intent intent){
         boolean muteSound = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
@@ -47,7 +47,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(2000);
                 Toast.makeText(context, "Alarm Triggered and SMS Sent", Toast.LENGTH_LONG).show();*/
-                context.getApplicationContext().registerReceiver(smsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+                context.getApplicationContext().registerReceiver(MainScreen.smsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+                context.getApplicationContext().registerReceiver(MainScreen.callReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
             }
         }
         else {
@@ -60,15 +61,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
             amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
             Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
-            context.getApplicationContext().unregisterReceiver(smsReceiver);
+            context.getApplicationContext().unregisterReceiver(MainScreen.smsReceiver);
+            context.getApplicationContext().unregisterReceiver(MainScreen.callReceiver);
         }
       }
-
-    private void sendSMS(String phoneNumber, String message)
-    {
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, null, null);
-    }
-
 }
 

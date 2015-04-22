@@ -31,6 +31,8 @@ public class MainScreen extends ListActivity {
     private static boolean SendText;
     public static String isStartAlarm;
     public static long id;
+    public static SMSReceiver smsReceiver = new SMSReceiver();
+    public  static CallReceiver callReceiver = new CallReceiver();
 
     EventAdapter mAdapter;
     DBAdapter database;
@@ -134,6 +136,8 @@ public class MainScreen extends ListActivity {
     public void removeEvents( MenuItem item){
         for(int i = 0; i < mAdapter.getCount(); i++)
             deleteItem(i);
+        unregisterReceiver(smsReceiver);
+        unregisterReceiver(callReceiver);
         mAdapter.clear();
         database.deleteAll();
     }
