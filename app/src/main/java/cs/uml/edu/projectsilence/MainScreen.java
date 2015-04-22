@@ -3,6 +3,7 @@ package cs.uml.edu.projectsilence;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.usage.UsageEvents;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.app.ListActivity;
@@ -39,7 +40,6 @@ public class MainScreen extends ListActivity {
         super.onCreate(savedInstanceState);
         database = new DBAdapter(getApplication());
         database.open();
-        database.deleteAll();
         mAdapter = new EventAdapter(getApplicationContext());
         Cursor cursor = database.getAllRows();
         cursor.moveToFirst();
@@ -145,6 +145,10 @@ public class MainScreen extends ListActivity {
         endIntent.replaceExtras(data);
         startIntent.putExtra(isStartAlarm, true );
         id = data.getLongExtra(EventItem.ID, id);
+        if(data.getBooleanExtra(EventItem.SEND_TEXT, false))
+        {
+
+        }
         PendingIntent startPIntent = PendingIntent.getBroadcast(MainScreen.this, (int)id, startIntent, 0);
         endIntent.putExtra(isStartAlarm, false);
         PendingIntent endPIntent = PendingIntent.getBroadcast(MainScreen.this, (int)id*10 , endIntent, 0);

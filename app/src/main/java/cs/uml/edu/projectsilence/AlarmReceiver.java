@@ -3,15 +3,18 @@ package cs.uml.edu.projectsilence;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
+import android.view.View;
 import android.widget.Toast;
 
 /**
  * Created by Jeremy on 4/13/2015.
  */
 public class AlarmReceiver extends BroadcastReceiver {
+    SMSReceiver smsReceiver = new SMSReceiver();
     @Override
     public void onReceive(Context context, Intent intent){
         boolean muteSound = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
@@ -36,14 +39,15 @@ public class AlarmReceiver extends BroadcastReceiver {
                 amanager.setStreamMute(AudioManager.STREAM_DTMF, true);
                 amanager.setRingerMode( 0 );
             }
-            if(sendMessage){
-                String phoneNumber = "16034758425";
+            if(sendMessage) {
+                /*String phoneNumber = "16034758425";
                 String message = "Test";
-                sendSMS( phoneNumber, message);
+                sendSMS(phoneNumber, message);
                 Vibrator v;
-                v=(Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+                v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(2000);
-                Toast.makeText(context, "Alarm Triggered and SMS Sent", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Alarm Triggered and SMS Sent", Toast.LENGTH_LONG).show();*/
+                context.getApplicationContext().registerReceiver(smsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
             }
         }
         else {
@@ -55,9 +59,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
             amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
             amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
-
-
             Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
+            context.getApplicationContext().unregisterReceiver(smsReceiver);
         }
       }
 
@@ -66,7 +69,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, null, null);
     }
-
 
 }
 
