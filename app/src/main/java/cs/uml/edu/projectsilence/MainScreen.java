@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.app.ListActivity;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.view.Menu;
@@ -76,6 +77,7 @@ public class MainScreen extends ListActivity {
     @Override
     protected void onDestroy()
     {
+        super.onDestroy();
         database.close();
     }
     @Override
@@ -236,6 +238,16 @@ public class MainScreen extends ListActivity {
         pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
         alarm.cancel(pendingIntent);
         Toast.makeText(this, "Alarm delete 2", Toast.LENGTH_LONG).show();
+        if(event.getMuteSounds()) {
+            AudioManager amanager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+            amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+            amanager.setStreamMute(AudioManager.STREAM_ALARM, false);
+            amanager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            amanager.setStreamMute(AudioManager.STREAM_RING, false);
+            amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+            amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
+            amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
+        }
         database.deleteRow(event.getID());
     }
 }
