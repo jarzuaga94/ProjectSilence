@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,8 +32,12 @@ public class AddEventActivity extends Activity {
     private static TextView startTimeView;
     private static TextView endDateView;
     private static TextView endTimeView;
+    private static ToggleButton sendMessageTB;
+    private static ToggleButton muteSoundsTB;
     private static boolean mute_sound;
     private static boolean send_text;
+    private static long id = 0;
+    private static Intent data;
     private Date mStartDate;
     private Date mEndDate;
 
@@ -44,18 +49,43 @@ public class AddEventActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        data = getIntent();
         setContentView(R.layout.event_details);
         mTitleText = (EditText) findViewById(R.id.title);
         startDateView = (TextView) findViewById(R.id.start_date);
         startTimeView = (TextView) findViewById(R.id.start_time);
         endDateView = (TextView) findViewById(R.id.end_date);
         endTimeView = (TextView) findViewById(R.id.end_time);
-        setDefaultDateTime();
+        sendMessageTB = (ToggleButton)findViewById(R.id.sendTextTB);
+        muteSoundsTB = (ToggleButton)findViewById(R.id.muteSoundTB);
+        if(data.getIntExtra(MainScreen.POSITION, -1) != -1)
+        {
+            mTitleText.setText(data.getStringExtra(EventItem.TITLE));
+            startTimeString = data.getStringExtra(EventItem.START_TIME);
+            startDateString = data.getStringExtra(EventItem.START_DATE);
+            endTimeString = data.getStringExtra(EventItem.END_TIME);
+            endDateString = data.getStringExtra(EventItem.END_DATE);
+            mute_sound = data.getBooleanExtra(EventItem.MUTE_SOUND, false);
+            send_text= data.getBooleanExtra(EventItem.SEND_TEXT, false);
+            id = data.getLongExtra(EventItem.ID, -1);
+            startTimeView.setText(startTimeString);
+            startDateView.setText(startDateString);
+            endTimeView.setText(endTimeString);
+            endDateView.setText(endDateString);
+            sendMessageTB.setChecked(send_text);
+            muteSoundsTB.setChecked(mute_sound);
 
-        //
-        //-StartDate Picker
-        //-Sets datePickerID to 1 to set correct textview to the start date.
-        //
+
+
+        }
+        else {
+            setDefaultDateTime();
+
+            //
+            //-StartDate Picker
+            //-Sets datePickerID to 1 to set correct textview to the start date.
+            //
+        }
         final Button startDatePickerButton = (Button) findViewById(R.id.start_date_picker_button);
         startDatePickerButton.setOnClickListener(new View.OnClickListener() {
 
@@ -126,7 +156,6 @@ public class AddEventActivity extends Activity {
         //-Toggles sendMessage for the event
         //-(Not yet implemented)
         //
-        final ToggleButton sendMessageTB = (ToggleButton)findViewById(R.id.sendTextTB);
         sendMessageTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -141,7 +170,6 @@ public class AddEventActivity extends Activity {
         //-Toggles muteSounds for the event
         //-(Not yet implemented)
         //
-        final ToggleButton muteSoundsTB = (ToggleButton)findViewById(R.id.muteSoundTB);
         muteSoundsTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -206,9 +234,7 @@ public class AddEventActivity extends Activity {
                 String endTime = endTimeString;
                 boolean muteSounds = mute_sound;
                 boolean sendText = send_text;
-
-                Intent data = new Intent();
-                EventItem.packageIntent(data, titleString,0, startDate, endDate,startTime, endTime, muteSounds, sendText );
+                EventItem.packageIntent(data, titleString,id, startDate, endDate,startTime, endTime, muteSounds, sendText );
                 setResult(RESULT_OK, data);
                 finish();
             }

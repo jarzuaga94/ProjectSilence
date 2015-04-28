@@ -67,7 +67,7 @@ public class EventItem {
             mEndTime = new Date();
         }
         mMuteSounds = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
-        mSendText = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);
+        mSendText = intent.getBooleanExtra(EventItem.SEND_TEXT, false);
         mId = intent.getLongExtra(EventItem.ID, mId);
     }
     public String getTitle() {
@@ -106,7 +106,7 @@ public class EventItem {
     public boolean getMuteSounds(){
         return mMuteSounds;
     }
-    public void setID(int id){mId = id;}
+    public void setID(long id){mId = id;}
     public long getID(){ return mId; }
     public boolean getSendText(){
         return mSendText;

@@ -14,7 +14,6 @@ import android.widget.Toast;
  * Created by Jeremy on 4/13/2015.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-    CallReceiver callReceiver = new CallReceiver();
     @Override
     public void onReceive(Context context, Intent intent){
         boolean muteSound = intent.getBooleanExtra(EventItem.MUTE_SOUND, false);

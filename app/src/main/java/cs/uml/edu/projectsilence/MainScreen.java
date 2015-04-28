@@ -1,10 +1,12 @@
 package cs.uml.edu.projectsilence;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.usage.UsageEvents;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.app.ListActivity;
 import android.database.Cursor;
@@ -23,6 +25,7 @@ import java.util.Calendar;
 
 public class MainScreen extends ListActivity {
     private static final int ADD_EVENT_REQUEST = 0;
+    private static final int EDIT_REQUEST_CODE = 1;
     private static String Title;
     private static String StartDate;
     private static String StartTime;
@@ -30,13 +33,15 @@ public class MainScreen extends ListActivity {
     private static String EndTime;
     private static boolean MuteSound;
     private static boolean SendText;
-    public static String isStartAlarm;
+    public static String isStartAlarm = "isStartAlarm";
     public static long id;
+    public static String POSITION = "pos";
     public static SMSReceiver smsReceiver = new SMSReceiver();
     public  static CallReceiver callReceiver = new CallReceiver();
+    public static EventAdapter mAdapter;
+    public  static DBAdapter database;
 
-    EventAdapter mAdapter;
-    DBAdapter database;
+
     AlarmManager alarm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class MainScreen extends ListActivity {
         Cursor cursor = database.getAllRows();
         cursor.moveToFirst();
         Intent data = new Intent();
+        data.putExtra(POSITION, -1);
         EventItem eventItem;
         while(!cursor.isAfterLast()) {
             Title = cursor.getString(DBAdapter.COL_NAME);
@@ -64,12 +70,44 @@ public class MainScreen extends ListActivity {
         }
         cursor.close();
         getListView().setAdapter(mAdapter);
-
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editEvent(position);
+            }
+        });
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteItem(position);
-                mAdapter.remove(position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        MainScreen.this);
+
+                // set title
+                alertDialogBuilder.setTitle("Delete Event");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Are you sure you want to delete this event?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                deleteItem(position);
+                                mAdapter.remove(position);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, just close
+                                // the dialog box and do nothing
+                                dialog.cancel();
+                            }
+                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
                 return true;
             }
         });
@@ -82,19 +120,27 @@ public class MainScreen extends ListActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_EVENT_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                EventItem eventItem = new EventItem(data);
-                StartDate = EventItem.FORMAT.format(eventItem.getStarDate());
-                StartTime = EventItem.timeFORMAT.format(eventItem.getStartTime());
-                EndDate = EventItem.FORMAT.format(eventItem.getEndDate());
-                EndTime = EventItem.timeFORMAT.format(eventItem.getEndTime());
+        if (resultCode == RESULT_OK)
+        {
+            EventItem eventItem = new EventItem(data);
+            StartDate = EventItem.FORMAT.format(eventItem.getStarDate());
+            StartTime = EventItem.timeFORMAT.format(eventItem.getStartTime());
+            EndDate = EventItem.FORMAT.format(eventItem.getEndDate());
+            EndTime = EventItem.timeFORMAT.format(eventItem.getEndTime());
+            if (requestCode == ADD_EVENT_REQUEST) {
                 id = database.insertRow(eventItem.getTitle(), StartTime,
                         StartDate, EndTime, EndDate, eventItem.getMuteSounds(), eventItem.getSendText());
-                eventItem.setID((int)id);
+                eventItem.setID(id);
                 data.putExtra(EventItem.ID, id);
                 mAdapter.add(eventItem);
                 scheduleAlarm(getListView(), data);
+            }
+            if(requestCode == EDIT_REQUEST_CODE){
+                database.updateRow(eventItem.getID(),eventItem.getTitle(),StartTime,
+                        StartDate, EndTime, EndDate, eventItem.getMuteSounds(), eventItem.getSendText());
+               mAdapter.updateEvent(eventItem, data.getIntExtra(POSITION, -1));
+               scheduleAlarm(getListView(), data);
+
             }
         }
 
@@ -127,6 +173,7 @@ public class MainScreen extends ListActivity {
     public void addEventSelected( MenuItem item){
 
         Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
+        intent.putExtra(POSITION, -1);
         startActivityForResult(intent, ADD_EVENT_REQUEST);
 
     }
@@ -136,12 +183,12 @@ public class MainScreen extends ListActivity {
     //-Clears all events from screen also deletes events from database.
     //
     public void removeEvents( MenuItem item){
-        for(int i = 0; i < mAdapter.getCount(); i++)
-            deleteItem(i);
-        unregisterReceiver(smsReceiver);
-        unregisterReceiver(callReceiver);
-        mAdapter.clear();
-        database.deleteAll();
+        if(mAdapter.getCount() > 0) {
+            for (int i = 0; i < mAdapter.getCount(); i++)
+                deleteItem(i);
+            mAdapter.clear();
+            database.deleteAll();
+        }
     }
     public void scheduleAlarm(View V, Intent data)
     {
@@ -149,7 +196,7 @@ public class MainScreen extends ListActivity {
         Intent endIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         startIntent.replaceExtras(data);
         endIntent.replaceExtras(data);
-        startIntent.putExtra(isStartAlarm, true );
+        startIntent.putExtra(isStartAlarm, true);
         id = data.getLongExtra(EventItem.ID, id);
         if(data.getBooleanExtra(EventItem.SEND_TEXT, false))
         {
@@ -249,5 +296,22 @@ public class MainScreen extends ListActivity {
             amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
         }
         database.deleteRow(event.getID());
+    }
+    public void editEvent(int position)
+    {
+        EventItem event = mAdapter.getItem(position);
+        Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
+        EventItem.packageIntent(intent,event.getTitle(), event.getID(), EventItem.FORMAT.format(event.getStarDate()),
+                EventItem.FORMAT.format(event.getEndDate()), EventItem.timeFORMAT.format(event.getStartTime()),
+                EventItem.timeFORMAT.format(event.getEndTime()), event.getMuteSounds(), event.getSendText());
+        intent.putExtra(isStartAlarm, true );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID(), intent, 0);
+        alarm.cancel(pendingIntent);
+        Toast.makeText(this, "Alarm deleted", Toast.LENGTH_LONG).show();
+        intent.putExtra(isStartAlarm, false );
+        pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
+        alarm.cancel(pendingIntent);
+        intent.putExtra(POSITION, position);
+        startActivityForResult(intent, EDIT_REQUEST_CODE );
     }
 }

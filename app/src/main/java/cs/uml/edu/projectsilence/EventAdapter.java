@@ -33,6 +33,10 @@ public class EventAdapter extends BaseAdapter {
         mItems.remove(pos);
         notifyDataSetChanged();
     }
+    public void updateEvent(EventItem item, int position){
+        mItems.set(position, item);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return mItems.size();
