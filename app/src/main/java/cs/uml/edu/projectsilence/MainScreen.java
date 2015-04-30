@@ -348,6 +348,7 @@ public class MainScreen extends ListActivity {
                 EventItem.FORMAT.format(event.getEndDate()), EventItem.timeFORMAT.format(event.getStartTime()),
                 EventItem.timeFORMAT.format(event.getEndTime()), event.getMuteSounds(), event.getSendText());
         intent.putExtra(isStartAlarm, true );
+        intent.putExtra(POSITION, position);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID(), intent, 0);
         alarm.cancel(pendingIntent);
         Toast.makeText(this, "Alarm deleted", Toast.LENGTH_LONG).show();
