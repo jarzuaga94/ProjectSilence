@@ -1,13 +1,11 @@
 package cs.uml.edu.projectsilence;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.os.Vibrator;
-import android.telephony.SmsManager;
-import android.view.View;
 import android.widget.Toast;
 
 /**
