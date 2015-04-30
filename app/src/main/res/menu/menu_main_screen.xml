@@ -9,4 +9,8 @@
         android:title="Remove All Events"
         android:onClick="removeEvents"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_friends"
+        android:title="Add Friends"
+        android:onClick="addFriends"
+        app:showAsAction="never"/>
 </menu>

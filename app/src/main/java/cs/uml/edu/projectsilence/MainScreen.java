@@ -22,11 +22,13 @@ import java.util.Calendar;
 public class MainScreen extends ListActivity {
     private static final int ADD_EVENT_REQUEST = 0;
     private static final int EDIT_REQUEST_CODE = 1;
+    private static final int ADD_FRIEND_CODE = 2;
     private static String Title;
     private static String StartDate;
     private static String StartTime;
     private static String EndDate;
     private static String EndTime;
+    private static String[] friends;
     private static boolean MuteSound;
     private static boolean SendText;
     public static String isStartAlarm = "isStartAlarm";
@@ -139,6 +141,9 @@ public class MainScreen extends ListActivity {
 
             }
         }
+        if( resultCode == ADD_FRIEND_CODE ){
+
+        }
 
 
     }
@@ -171,6 +176,18 @@ public class MainScreen extends ListActivity {
         Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
         intent.putExtra(POSITION, -1);
         startActivityForResult(intent, ADD_EVENT_REQUEST);
+
+    }
+
+    //
+    //-Called when ADD Event is clicked from actionbar/settings tab.
+    //-Creates an intent and calls it to switch to addEvent activity.
+    //
+    public void addFriends( MenuItem item){
+
+        Intent intent = new Intent(getBaseContext(), FriendsList.class);
+
+        startActivityForResult(intent, ADD_FRIEND_CODE);
 
     }
 

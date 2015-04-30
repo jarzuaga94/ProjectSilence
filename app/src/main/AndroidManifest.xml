@@ -35,6 +35,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cs.uml.edu.projectsilence.MainScreen" />
         </activity>
+        <activity
+            android:name=".FriendsList"
+            android:label="Friends"
+            android:parentActivityName=".MainScreen" >
+        </activity>
         <receiver android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported= "true"/>

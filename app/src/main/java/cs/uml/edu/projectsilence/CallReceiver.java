@@ -22,6 +22,7 @@ public class CallReceiver extends BroadcastReceiver {
 
             // Get the current Phone State
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+            String title = intent.getStringExtra(EventItem.TITLE);
 
             if(state==null)
                 return;
@@ -33,6 +34,7 @@ public class CallReceiver extends BroadcastReceiver {
                 // Get the Caller's Phone Number
                 Bundle bundle = intent.getExtras();
                 callerPhoneNumber= bundle.getString("incoming_number");
+
             }
 
 
@@ -51,7 +53,7 @@ public class CallReceiver extends BroadcastReceiver {
                 if(ring==true&&callReceived==false)
                 {
                     Toast.makeText(context, "It was A MISSED CALL from : " + callerPhoneNumber, Toast.LENGTH_LONG).show();
-                    sms.sendTextMessage(callerPhoneNumber, null, "I'm current busy", null, null);
+                    sms.sendTextMessage(callerPhoneNumber, null, "I'm current busy at " + title , null, null);
                 }
             }
     }
