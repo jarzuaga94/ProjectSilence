@@ -5,4 +5,8 @@
         android:title="Add Friends"
         android:onClick="addFriends"
         app:showAsAction="always"/>
+    <item android:id="@+id/action_save"
+        android:title="Save"
+        android:onClick="saveFriends"
+        app:showAsAction="always"/>
 </menu>

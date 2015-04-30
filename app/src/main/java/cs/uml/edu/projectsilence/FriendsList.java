@@ -7,6 +7,7 @@ package cs.uml.edu.projectsilence;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
@@ -25,16 +26,17 @@ import java.util.ArrayList;
 public class FriendsList extends ListActivity {
 
     //String[] values = new String[];
-    private String[] values = new String[] {};
+    private ArrayList<String> values = new ArrayList<String>();
     private int stringIndex = 0;
     ArrayAdapter<String> adapter;
-
-    public void onCreate(Bundle icicle) {
-
+    private static Intent data;
 
 
-        super.onCreate(icicle);
+    public void onCreate(Bundle bundle) {
 
+        super.onCreate(bundle);
+
+        data = getIntent();
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
@@ -76,9 +78,9 @@ public class FriendsList extends ListActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                values[stringIndex] = input.getText().toString();
-                stringIndex++;
-                //setListAdapter(adapter);
+                values.add(input.getText().toString());
+                //stringIndex++;
+                setListAdapter(adapter);
                 //dialog.cancel();
             }
         });
@@ -97,6 +99,20 @@ public class FriendsList extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String item = (String) getListAdapter().getItem(position);
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+        adapter.remove(item);
     }
+
+    public static void packageIntent(Intent intent, ArrayList<String> list ) {
+
+        data.putStringArrayListExtra( "friends", list);
+
+    }
+
+    public void saveFriends( MenuItem item ){
+        packageIntent( data, values );
+        setResult( 2, data );
+        finish();
+    }
+
 }
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -28,9 +29,9 @@ public class MainScreen extends ListActivity {
     private static String StartTime;
     private static String EndDate;
     private static String EndTime;
-    private static String[] friends;
     private static boolean MuteSound;
     private static boolean SendText;
+    public static ArrayList<String> friends = new ArrayList<String>();
     public static String isStartAlarm = "isStartAlarm";
     public static long id;
     public static String POSITION = "pos";
@@ -93,9 +94,9 @@ public class MainScreen extends ListActivity {
                                 mAdapter.remove(position);
                             }
                         })
+                                // if this button is clicked, just close
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
                                 // the dialog box and do nothing
                                 dialog.cancel();
                             }
@@ -142,7 +143,8 @@ public class MainScreen extends ListActivity {
             }
         }
         if( resultCode == ADD_FRIEND_CODE ){
-
+            friends = data.getStringArrayListExtra( "friends" );
+            Toast.makeText(this, friends.get(0) , Toast.LENGTH_LONG).show();
         }
 
 
@@ -325,6 +327,6 @@ public class MainScreen extends ListActivity {
         pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
         alarm.cancel(pendingIntent);
         intent.putExtra(POSITION, position);
-        startActivityForResult(intent, EDIT_REQUEST_CODE );
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
     }
 }
