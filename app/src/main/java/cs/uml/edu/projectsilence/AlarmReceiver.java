@@ -19,7 +19,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         boolean isStartAlarm = intent.getBooleanExtra(MainScreen.isStartAlarm, false);
 
         //Will get used when we send texts based on location
-        //String fromEvent = intent.getStringExtra(EventItem.TITLE);
+        //String eventName = intent.getStringExtra(EventItem.TITLE);
+        //String endTime = intent.getStringExtra( EventItem.END_TIME );
 
 
         Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
