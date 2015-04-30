@@ -20,6 +20,18 @@ import android.widget.ListView;
 import android.app.ListActivity;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 
@@ -30,13 +42,35 @@ public class FriendsList extends ListActivity {
     private int stringIndex = 0;
     ArrayAdapter<String> adapter;
     private static Intent data;
+    public String friendFile = "friendFile";
+    //File file = new File(this.getFilesDir(), friendFile);
+    //File file = new File( this.getFilesDir(), friendFile);
+
+    FileInputStream inputStream;
 
 
     public void onCreate(Bundle bundle) {
 
         super.onCreate(bundle);
-
         data = getIntent();
+        try {
+            readFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*try {
+            inputStream = openFileInput(friendFile);
+            byte[] input = new byte[inputStream.available()];
+
+
+            inputStream.read(input);
+            values.add(0, new String(input));;
+            inputStream.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }*/
+
+
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
@@ -62,11 +96,29 @@ public class FriendsList extends ListActivity {
         }
     }
 
+    public void readFiles() throws IOException {
+        String str="";
+        int i = 0;
+        StringBuffer buf = new StringBuffer();
+        inputStream = openFileInput(friendFile);
+        InputStream is = inputStream;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        if (is!=null) {
+            while ((str = reader.readLine()) != null) {
+                buf.append(str + "\n" );
+                values.add(i, str);
+                i++;
+            }
+        }
+        is.close();
+
+
+    }
     public void addFriends( MenuItem item ){
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("New Friend");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -109,6 +161,23 @@ public class FriendsList extends ListActivity {
     }
 
     public void saveFriends( MenuItem item ){
+        try {
+
+            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(friendFile, 0));
+            BufferedWriter bwriter = new BufferedWriter(out);
+            for( int i = 0; i < values.size(); i++){
+                bwriter.write(values.get(i));
+                bwriter.newLine();
+            }
+            bwriter.close();
+            //Toast.makeText(this,"Here" , Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         packageIntent( data, values );
         setResult( 2, data );
         finish();

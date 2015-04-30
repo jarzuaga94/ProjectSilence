@@ -16,6 +16,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,6 +38,7 @@ public class MainScreen extends ListActivity {
     private static String EndTime;
     private static boolean MuteSound;
     private static boolean SendText;
+    public String friendFile = "friendFile";
     public static ArrayList<String> friends = new ArrayList<String>();
     public static String isStartAlarm = "isStartAlarm";
     public static long id;
@@ -53,6 +61,14 @@ public class MainScreen extends ListActivity {
         Intent data = new Intent();
         data.putExtra(POSITION, -1);
         EventItem eventItem;
+
+        try {
+            readFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         while(!cursor.isAfterLast()) {
             Title = cursor.getString(DBAdapter.COL_NAME);
             StartDate = cursor.getString(DBAdapter.COL_STARTDATE);
@@ -144,7 +160,11 @@ public class MainScreen extends ListActivity {
         }
         if( resultCode == ADD_FRIEND_CODE ){
             friends = data.getStringArrayListExtra( "friends" );
-            Toast.makeText(this, friends.get(0) , Toast.LENGTH_LONG).show();
+            /*for( int i = 0; i < friends.size(); i++ ){
+                Toast.makeText(this, friends.get(i) , Toast.LENGTH_SHORT).show();
+            }*/
+
+            saveFriends();
         }
 
 
@@ -168,7 +188,42 @@ public class MainScreen extends ListActivity {
         }
     }
 
+    public void saveFriends( ){
+        try {
 
+            OutputStreamWriter out = new OutputStreamWriter(openFileOutput(friendFile, 0));
+            BufferedWriter bwriter = new BufferedWriter(out);
+            for( int i = 0; i < friends.size(); i++){
+                bwriter.write(friends.get(i));
+                bwriter.newLine();
+            }
+            bwriter.close();
+            //Toast.makeText(this,"Here" , Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void readFiles() throws IOException {
+        String str="";
+        int i = 0;
+        StringBuffer buf = new StringBuffer();
+
+        InputStream is = openFileInput(friendFile);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        if (is!=null) {
+            while ((str = reader.readLine()) != null) {
+                buf.append(str + "\n" );
+                friends.add(i, str);
+                i++;
+            }
+        }
+        is.close();
+
+
+    }
     //
     //-Called when ADD Event is clicked from actionbar/settings tab.
     //-Creates an intent and calls it to switch to addEvent activity.
