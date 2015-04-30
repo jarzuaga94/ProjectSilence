@@ -23,10 +23,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         //String endTime = intent.getStringExtra( EventItem.END_TIME );
 
 
-        Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "Alarm receiver", Toast.LENGTH_LONG).show();
         if(isStartAlarm){
             if (muteSound) {
-                Toast.makeText(context, "Mute Sound Triggered", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Mute Sound Triggered", Toast.LENGTH_LONG).show();
                 AudioManager amanager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
                 amanager.setStreamMute(AudioManager.STREAM_ALARM, true);
@@ -58,7 +58,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             amanager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
             amanager.setStreamMute(AudioManager.STREAM_VOICE_CALL, false);
             amanager.setStreamMute(AudioManager.STREAM_DTMF, false);
-            Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "EndTime alarm", Toast.LENGTH_LONG).show();
             context.getApplicationContext().unregisterReceiver(MainScreen.smsReceiver);
             context.getApplicationContext().unregisterReceiver(MainScreen.callReceiver);
         }

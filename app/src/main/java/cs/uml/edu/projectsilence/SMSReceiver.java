@@ -37,12 +37,11 @@ public class SMSReceiver extends BroadcastReceiver {
                     // Show Alert
                     int duration = Toast.LENGTH_LONG;
                     boolean isFriend = false;
-                    Toast toast = Toast.makeText(context,
-                            "senderNum: " + phoneNumber + ", message: " + message, duration);
-                    toast.show();
+                    //Toast toast = Toast.makeText(context,"senderNum: " + phoneNumber + ", message: " + message, duration);
+                    //toast.show();
 
                     for(int j = 0; j < MainScreen.friends.size(); j++){
-                        Toast.makeText(context, MainScreen.friends.get(j), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, MainScreen.friends.get(j), Toast.LENGTH_SHORT).show();
                         if( !phoneNumber.equals(MainScreen.friends.get(j)) ){
 
                             isFriend = false;
