@@ -68,7 +68,7 @@ public class MainScreen extends ListActivity {
             e.printStackTrace();
         }
 
-
+        //Read in data from the database
         while(!cursor.isAfterLast()) {
             Title = cursor.getString(DBAdapter.COL_NAME);
             StartDate = cursor.getString(DBAdapter.COL_STARTDATE);
@@ -85,12 +85,14 @@ public class MainScreen extends ListActivity {
         }
         cursor.close();
         getListView().setAdapter(mAdapter);
+        //On click listener for each item in the list
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editEvent(position);
             }
         });
+        //Long click listener for each item in the list
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -262,6 +264,7 @@ public class MainScreen extends ListActivity {
     }
     public void scheduleAlarm(View V, Intent data)
     {
+        //Creates a pending intent for the start an end alarm clock
         Intent startIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         Intent endIntent = new Intent(MainScreen.this, AlarmReceiver.class);
         startIntent.replaceExtras(data);
@@ -283,6 +286,7 @@ public class MainScreen extends ListActivity {
 
     }
     private long getMilli(String dateString, String timeString) {
+        //Parses the string to get the time in milliseconds which is used for the alarm manager
         String year = "";
         String month = "";
         String day = "";
@@ -342,6 +346,7 @@ public class MainScreen extends ListActivity {
     }
     private void deleteItem(int position)
     {
+        //Deletes item from mAdapter and database and cancels alarm for that event
         EventItem event = mAdapter.getItem(position);
         Intent intent = new Intent(MainScreen.this, AlarmReceiver.class);
         EventItem.packageIntent(intent,event.getTitle(), event.getID(), EventItem.FORMAT.format(event.getStarDate()),
@@ -370,6 +375,7 @@ public class MainScreen extends ListActivity {
     }
     public void editEvent(int position)
     {
+        //cancels alarm and opens the AddEventActiivity for editing
         EventItem event = mAdapter.getItem(position);
         Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
         EventItem.packageIntent(intent,event.getTitle(), event.getID(), EventItem.FORMAT.format(event.getStarDate()),

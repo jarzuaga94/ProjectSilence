@@ -19,8 +19,6 @@ public class SMSReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
         final Bundle bundle = intent.getExtras();
-        //String eventName = intent.getStringExtra(EventItem.TITLE);
-        //String endTime = intent.getStringExtra(EventItem.END_TIME);
 
         try {
 
@@ -32,16 +30,12 @@ public class SMSReceiver extends BroadcastReceiver {
 
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
-                    //String message = "I'm currently busy at " + MainScreen.t + ". I'll be available again at " + endTime + ".";
                     String message = "I'm currently busy";
                     // Show Alert
                     int duration = Toast.LENGTH_LONG;
                     boolean isFriend = false;
-                    //Toast toast = Toast.makeText(context,"senderNum: " + phoneNumber + ", message: " + message, duration);
-                    //toast.show();
 
                     for(int j = 0; j < MainScreen.friends.size(); j++){
-                        //Toast.makeText(context, MainScreen.friends.get(j), Toast.LENGTH_SHORT).show();
                         if( !phoneNumber.equals(MainScreen.friends.get(j)) ){
 
                             isFriend = false;

@@ -36,15 +36,11 @@ import java.util.ArrayList;
 
 
 public class FriendsList extends ListActivity {
-
-    //String[] values = new String[];
     private ArrayList<String> values = new ArrayList<String>();
     private int stringIndex = 0;
     ArrayAdapter<String> adapter;
     private static Intent data;
     public String friendFile = "friendFile";
-    //File file = new File(this.getFilesDir(), friendFile);
-    //File file = new File( this.getFilesDir(), friendFile);
 
     FileInputStream inputStream;
 
@@ -58,18 +54,6 @@ public class FriendsList extends ListActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*try {
-            inputStream = openFileInput(friendFile);
-            byte[] input = new byte[inputStream.available()];
-
-
-            inputStream.read(input);
-            values.add(0, new String(input));;
-            inputStream.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }*/
-
 
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
@@ -131,9 +115,7 @@ public class FriendsList extends ListActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 values.add(input.getText().toString());
-                //stringIndex++;
                 setListAdapter(adapter);
-                //dialog.cancel();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -170,7 +152,6 @@ public class FriendsList extends ListActivity {
                 bwriter.newLine();
             }
             bwriter.close();
-            //Toast.makeText(this,"Here" , Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
