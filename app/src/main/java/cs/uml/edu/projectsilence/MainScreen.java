@@ -360,7 +360,7 @@ public class MainScreen extends ListActivity {
         intent.putExtra(isStartAlarm, false );
         pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
         alarm.cancel(pendingIntent);
-        Toast.makeText(this, "Alarm delete 2", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Alarm delete 2", Toast.LENGTH_LONG).show();
         if(event.getMuteSounds()) {
             AudioManager amanager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
             amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
@@ -384,7 +384,7 @@ public class MainScreen extends ListActivity {
         intent.putExtra(isStartAlarm, true );
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID(), intent, 0);
         alarm.cancel(pendingIntent);
-        Toast.makeText(this, "Alarm deleted", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Edit Alarm", Toast.LENGTH_LONG).show();
         intent.putExtra(isStartAlarm, false );
         pendingIntent = PendingIntent.getBroadcast(MainScreen.this, (int)event.getID()*10, intent, 0);
         alarm.cancel(pendingIntent);
